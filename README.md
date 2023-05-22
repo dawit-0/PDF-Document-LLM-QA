@@ -1,4 +1,4 @@
-# PDF-Document-LLM-QA
+# PDF Document LLM QA
 
 ## How it works
 
