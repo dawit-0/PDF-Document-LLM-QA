@@ -1,0 +1,9 @@
+langchain
+openai
+urllib3==1.26.6
+pypdf
+streamlit
+streamlit-extras
+faiss-cpu
+PyPDF2==3.0.1
+tiktoken

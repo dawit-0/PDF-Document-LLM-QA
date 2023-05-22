@@ -1,0 +1,4 @@
+*.pdf
+venv/**
+*.env
+*.pk1
