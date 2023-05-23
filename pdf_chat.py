@@ -11,9 +11,13 @@ import os
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
+from dotenv import load_dotenv
+
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
-def create_home_page():
+def create_side_bar():
     with streamlit.sidebar:
         streamlit.title('Chat with your PDF 🤖🤪')
         streamlit.markdown(
@@ -25,7 +29,6 @@ def create_home_page():
             '''
         )
         add_vertical_space(5)
-        streamlit.write("Made by Dawit 😈")
 
     streamlit.header('Chat w PDF')
 
@@ -80,12 +83,14 @@ def ask_llm(llm, vector_store, query):
 
 
 def main():
-    create_home_page()
+    create_side_bar()
     pdf = streamlit.file_uploader('Upload your PDF Document', type='pdf')
 
     if pdf:
         VectorStore = create_embeddings(pdf=pdf)
-        openai = OpenAI()
+        openai = OpenAI(
+            api_key=OPENAI_API_KEY,
+        )
 
         query = streamlit.text_input(
             "What's your question about your document?: ")
