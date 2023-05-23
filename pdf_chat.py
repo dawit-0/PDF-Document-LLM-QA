@@ -67,15 +67,16 @@ def create_embeddings(pdf):
 
 
 def ask_llm(llm, vector_store, query):
+    """
+    Returns: response, callback 
+    """
     docs = vector_store.similarity_search(query=query, k=3)
     chain = load_qa_chain(llm=llm, chain_type='stuff')
 
     # Log price and output price of query
     with get_openai_callback() as cb:
         response = chain.run(input_documents=docs, question=query)
-        print(cb)
-        streamlit.write(response)
-        streamlit.write(f"cost of that query: ${cb.total_cost}")
+        return response, cb
 
 
 def main():
@@ -88,10 +89,14 @@ def main():
 
         query = streamlit.text_input(
             "What's your question about your document?: ")
-        streamlit.write(query)
 
         if query:
-            ask_llm(llm=openai, vector_store=VectorStore, query=query)
+            streamlit.write(query)
+            with streamlit.spinner("Waiting for LLM to generate response ..."):
+                response, callback = ask_llm(
+                    llm=openai, vector_store=VectorStore, query=query)
+            streamlit.write(response)
+            streamlit.write(f"cost of that query: ${callback.total_cost}")
 
 
 if __name__ == "__main__":
