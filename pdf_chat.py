@@ -85,6 +85,11 @@ def main():
         user_input = st.sidebar.text_input(
             "What's your question about your document?: ")
 
+        reset = st.sidebar.button('Reset Conversation')
+
+        if reset:
+            st.session_state.conversation = []
+
         if user_input:
             st.session_state.conversation.append(
                 {"role": "user", "message": user_input})
@@ -95,21 +100,23 @@ def main():
 
         for message in st.session_state.conversation:
             if message["role"] == "user":
-                st.markdown(f'<div style="display:flex; align-items:center; margin-bottom:10px;">'
-                            f'<div style="font-size:24px;">🙂</div>'
-                            f'<div style="padding:10px; border-radius:10px; display:inline-block;'
-                            f'position:relative; margin-bottom:10px; margin-left:10px; border: 1px solid #DCF8C6;">'
-                            f'{message["message"]}'
-                            f'</div>'
-                            f'</div>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<div style="display:flex; align-items:center; margin-bottom:10px;">'
+                    f'<div style="font-size:24px;">🙂</div>'
+                    f'<div style="display: flex; align-items: flex-start; margin-bottom: 10px; margin-left:10px;">'
+                    f'<div style="background-color: #DCF8C6; color: #555555; border-radius: 12px; padding: 10px; margin-right: 10px;">'
+                    f'{message["message"]}',
+                    unsafe_allow_html=True
+                )
             elif message["role"] == "bot":
-                st.markdown(f'<div style="display:flex; align-items:center; margin-bottom:10px;">'
-                            f'<div style="font-size:24px;">🤖</div>'
-                            f'<div style="padding:10px; border-radius:10px; display:inline-block;'
-                            f'position:relative; margin-bottom:10px; margin-left:10px; border: 1px solid #DCF8C6;">'
-                            f'{message["message"]}'
-                            f'</div>'
-                            f'</div>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<div style="display:flex; align-items:center; margin-bottom:10px;">'
+                    f'<div style="font-size:24px;">🤖</div>'
+                    f'<div style="padding:10px; border-radius:10px; display:inline-block;'
+                    f'position:relative; margin-bottom:10px; margin-left:10px; border: 1px solid #DCF8C6;">'
+                    f'{message["message"]}'
+                    f'</div>'
+                    f'</div>', unsafe_allow_html=True)
 
         # if query:
         #     print(query)
